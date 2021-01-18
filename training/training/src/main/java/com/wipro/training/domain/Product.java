@@ -14,6 +14,13 @@ public class Product {
 	String name;
 	
 	String madeIn;
-	String price;
+	float price;
+	public Product(String name, String madeIn, float price) {
+		super();
+		this.name = name;
+		this.madeIn = madeIn;
+		this.price = price;
+	}
+	
 	
 }

@@ -19,6 +19,5 @@ public interface IProductService {
 	boolean deleteById(int id);
 	boolean isProductExist(Product product);
 
-	boolean isProductExistById(int id);
 
 }

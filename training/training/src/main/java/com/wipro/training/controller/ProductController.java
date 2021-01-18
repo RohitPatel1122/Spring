@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wipro.training.domain.Product;
-import com.wipro.training.service.ProductService;
+import com.wipro.training.service.IProductService;
 import com.wipro.training.util.MyCustomErrorType;
 
 @RestController()
@@ -27,7 +27,7 @@ import com.wipro.training.util.MyCustomErrorType;
 public class ProductController {
 	
 	@Autowired
-	ProductService productService;
+	IProductService productService;
 	
 	@GetMapping("/")
 	public String getMessage(){
@@ -59,7 +59,7 @@ public class ProductController {
 	public ResponseEntity<?> saveRecord(@Validated @RequestBody Product product){
 		ResponseEntity<?> response = new ResponseEntity<>(new MyCustomErrorType("Cannot create"),HttpStatus.INTERNAL_SERVER_ERROR);
 		//product.setId();
-		if(productService.isProductExist(product)) {
+		if(!productService.isProductExist(product)) {
 			product = productService.saveProduct(product);
 			 response= new ResponseEntity<>(product,HttpStatus.CREATED);
 		}
@@ -67,13 +67,14 @@ public class ProductController {
 		return response;
 	}
 	
-	@PutMapping("/")
-	public ResponseEntity<?> updateRecord(@Validated @RequestBody Product product){
+	@PutMapping("/{id}")
+	public ResponseEntity<?> updateRecord(@PathVariable int id,  @Validated @RequestBody Product product){
 		ResponseEntity<?> response = new ResponseEntity<>(new MyCustomErrorType("Cannot update"),HttpStatus.INTERNAL_SERVER_ERROR);
-		
+		product.setId(id);
+		//System.out.println(productService.isProductExist(product));
 		if(productService.isProductExist(product)) {
 			product = productService.updateProduct(product);
-			 response= new ResponseEntity<>(product,HttpStatus.CREATED);
+			 response= new ResponseEntity<>(product,HttpStatus.ACCEPTED);
 		}
 		 
 		return response;
@@ -81,11 +82,11 @@ public class ProductController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteRecord(@PathVariable int id){
-		ResponseEntity<?> response = new ResponseEntity<>(new MyCustomErrorType("Cannot Delete:"+id),HttpStatus.INTERNAL_SERVER_ERROR);
+		ResponseEntity<?> response = new ResponseEntity<>(new MyCustomErrorType("Cannot Delete:"+id),HttpStatus.NOT_FOUND);
 		
-		if(productService.isProductExistById(id)) {
+		if(productService.findById(id)!=null) {
 			productService.deleteById(id);
-			 response= new ResponseEntity<>("Delected",HttpStatus.ACCEPTED);
+			 response= new ResponseEntity<>(HttpStatus.ACCEPTED);
 		}
 		 
 		return response;
