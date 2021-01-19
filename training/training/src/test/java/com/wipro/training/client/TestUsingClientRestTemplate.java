@@ -28,14 +28,14 @@ public class TestUsingClientRestTemplate {
 	
 	private static void saveRecord() {
 		System.out.println("********SAVE PRODUCT************");
-		Product newProduct = new Product("mobile","china",1234.4f);
+		Product newProduct = new Product("mobile","One+","china",1234.4f);
 		ResponseEntity<?> response = template.postForEntity(URL, newProduct, Object.class);
 		System.out.println("********PRODUCT SAVED: "+response.getBody()+"************");
 	}
 	
 	private static void updateRecord(int id) {
 		System.out.println("********UPDATE PRODUCT WITH ID:"+id+"************");
-		Product newProduct = new Product("mobile","china",1244.4f);
+		Product newProduct = new Product("mobile","One+","china",1244.4f);
 		RequestEntity <?> requestEntity = RequestEntity.put(URL+"/"+id).body(newProduct);
 		ResponseEntity<?> response = template.exchange(requestEntity, Object.class);
 		System.out.println("********"+response.getBody()+"************");

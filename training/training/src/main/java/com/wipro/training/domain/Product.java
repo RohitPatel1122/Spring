@@ -12,10 +12,10 @@ import lombok.Setter;
 public class Product {
 	int id;
 	String name;
-	
+	String brand;
 	String madeIn;
 	float price;
-	public Product(String name, String madeIn, float price) {
+	public Product(String name,String brand, String madeIn, float price) {
 		super();
 		this.name = name;
 		this.madeIn = madeIn;
